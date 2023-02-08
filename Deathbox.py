@@ -47,6 +47,8 @@ def promptnGuess(string, table):
     for i in range(0,9):
         images.append(table.updateCards(i))
         cards.append(0)
+
+        #cards.append(Button(root, image=images[i], command=lambda: location.set(i)))
         
     cards[0] = Button(root, image=images[0], command=lambda: location.set(0))
     cards[1] = Button(root, image=images[1], command=lambda: location.set(1))
@@ -68,6 +70,7 @@ def promptnGuess(string, table):
 
 
     root.wait_variable(location)
+    print(location.get())
 
     #Make guess on the card
     guess = IntVar()
@@ -228,13 +231,15 @@ class Table(object):
         #Game starts
         while(deck.cards):
             for player in plist:
-                
+
+                string = ''
                 if (len(plist) > 1):
                     string = player.name + "'s turn! Make a guess!"
     
                 i = 0
                 before = 0
                 after = 0
+                
                 while(i < 3):
                     if (string == (player.name + "'s turn! Make a guess!")):
                         guess = promptnGuess(string, self)
@@ -273,7 +278,7 @@ class Table(object):
         fileName = fileName.replace(" ", "_").lower()
 
         #Append the base address
-        baseAddress = r'C:/Users/jrh41/Cards/'
+        baseAddress = r'Cards/'
         newAddress = baseAddress + fileName + '.png'
         image = Image.open(newAddress)
 
@@ -319,26 +324,28 @@ class Table(object):
 
 ########## GUI SECTION #########
 
-root = Tk()
-root.title('Card Games!')
-root.geometry('675x850')
-root.resizable('False','False')
-myDeck = Deck()
-myTable = Table(myDeck)
-myTable.deathboxGame(myDeck)
+if __name__ == "__main__": 
 
-prompt = Label(root, text = '', width=30, height=5)
-prompt.place(x=0,y=0)
+    root = Tk()
+    root.title('Card Games!')
+    root.geometry('675x850')
+    root.resizable('False','False')
+    myDeck = Deck()
+    myTable = Table(myDeck)
+    myTable.deathboxGame(myDeck)
 
-players = []
-num = promptnEntry("How many people are playing? (1-6)")
-numplayers = int(num)
-for i in range(0, numplayers):
-    string = "Who is Player " + str(i+1) + "?"
-    players.append(Player(promptnEntry(string)))
-    
-myTable.deathboxPlay(myTable.deathbox, myDeck, players, prompt)
-root.mainloop()
+    prompt = Label(root, text = '', width=30, height=5)
+    prompt.place(x=0,y=0)
+
+    players = []
+    num = promptnEntry("How many people are playing? (1-6)")
+    numplayers = int(num)
+    for i in range(0, numplayers):
+        string = "Who is Player " + str(i+1) + "?"
+        players.append(Player(promptnEntry(string)))
+        
+    myTable.deathboxPlay(myTable.deathbox, myDeck, players, prompt)
+    root.mainloop()
 
 
 
